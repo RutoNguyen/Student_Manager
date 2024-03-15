@@ -11,26 +11,30 @@ struct SinhVien
 {
     int id;
     string ten;
-    string gioiTinh;
     int tuoi;
+    string gioiTinh;
     float diemToan;
     float diemLy;
     float diemHoa;
-    float diemTB = 0;
-    string hocluc = "-";
+    float diemTB;
+    string hocluc;
+    SinhVien() : id(0), ten(""), tuoi(0), gioiTinh(""), diemToan(0), diemLy(0), diemHoa(0), diemTB(0), hocluc("") {}
+    SinhVien(int _id, string _ten, int _tuoi, string _gioiTinh, float _diemToan,
+        float _diemLy, float _diemHoa, float _diemTB, string _hocluc)
+        : id(_id), ten(_ten), tuoi(_tuoi), gioiTinh(_gioiTinh), diemToan(_diemToan),
+        diemLy(_diemLy), diemHoa(_diemHoa), diemTB(_diemTB), hocluc(_hocluc) {}
 };
-
 typedef SinhVien SV;
 
 void printLine(int n);
-void nhapThongTinSV(SV &sv, int id);
+void nhapThongTinSV(SV& sv, int id);
 void nhapSV(SV a[], int id, int n);
-void capNhatThongTinSV(SV &sv);
+void capNhatThongTinSV(SV& sv);
 void capNhatSV(SV a[], int id, int n);
 int xoaTheoID(SV a[], int id, int n);
 void timKiemTheoTen(SV a[], string ten, int n);
-void tinhDTB(SV &sv);
-void xeploai(SV &sv);
+void tinhDTB(SV& sv);
+void xeploai(SV& sv);
 int idLonNhat(SV a[], int n);
 void sapxepTheoDTB(SV a[], int n);
 void sapXepTheoTen(SV a[], int n);
@@ -104,7 +108,8 @@ int main()
                 cin.ignore();
                 if (xoaTheoID(arraySV, id, soluongSV) == 1)
                 {
-                    printf("\nSinh vien co id = %d da bi xoa.", &id);
+                    //printf("\nSinh vien co id = %d da bi xoa.", &id);
+                    cout << "\nSinh vien co id = " << id << " da bi xoa";
                     soluongSV--;
                 }
             }
@@ -122,7 +127,7 @@ int main()
                 string strTen;
                 cout << "\nNhap ten de tim kiem: ";
                 cin.ignore();
-                getline(cin,strTen);
+                getline(cin, strTen);
                 timKiemTheoTen(arraySV, strTen, soluongSV);
             }
             else
@@ -179,7 +184,7 @@ int main()
             {
                 cout << "\nSanh sach sinh vien trong!";
             }
-            printf("\nGhi danh sach sinh vien vao file %s thanh cong!", fileName);
+            cout << "\nGhi danh sach sinh vien vao file %s thanh cong!" << fileName;
             pressAnyKey();
             //cin.get();
             break;
@@ -196,12 +201,12 @@ int main()
     }
 }
 
-void tinhDTB(SV &sv)
+void tinhDTB(SV& sv)
 {
     sv.diemTB = (sv.diemToan + sv.diemLy + sv.diemHoa) / 3;
 }
 
-void xeploai(SV &sv)
+void xeploai(SV& sv)
 {
     if (sv.diemTB >= 8)
         sv.hocluc = "Gioi";
@@ -213,14 +218,14 @@ void xeploai(SV &sv)
         sv.hocluc = "Yeu";
 }
 
-void nhapThongTinSV(SV &sv, int id)
+void nhapThongTinSV(SV& sv, int id)
 {
     cout << "\n Nhap ten: ";
-    cin.ignore();
-    getline(cin,sv.ten);
+    //cin.ignore();
+    getline(cin, sv.ten);
     cout << " Nhap gioi tinh: ";
-    cin.ignore();
-    getline(cin,sv.gioiTinh);
+    //cin.ignore();
+    getline(cin, sv.gioiTinh);
     //cin.ignore();
     cout << " Nhap tuoi: ";
     cin >> sv.tuoi;
@@ -238,19 +243,19 @@ void nhapThongTinSV(SV &sv, int id)
 void nhapSV(SV a[], int id, int n)
 {
     printLine(40);
-    printf("\n Nhap sinh vien thu %d:", n + 1);
+    cout << "\n Nhap sinh vien thu: " << n + 1;
     nhapThongTinSV(a[n], id);
     printLine(40);
 }
 
-void capNhatThongTinSV(SV &sv)
+void capNhatThongTinSV(SV& sv)
 {
     cout << "\n Nhap ten: ";
     cin.ignore();
-    getline(cin,sv.ten);
+    getline(cin, sv.ten);
     cout << " Nhap gioi tinh: ";
     cin.ignore();
-    getline(cin,sv.gioiTinh);
+    getline(cin, sv.gioiTinh);
     cout << " Nhap tuoi: ";
     cin >> sv.tuoi;
     cout << " Nhap diem Toan: ";
@@ -335,9 +340,9 @@ void timKiemTheoTen(SV a[], string ten, int n)
     int found = 0;
     for (int i = 0; i < n; i++)
     {
-        // Chuyển đổi tên của sinh viên và tên tìm kiếm sang chữ in hoa để so sánh không phân biệt chữ hoa chữ thường
+        // Chuy?n ??i tên c?a sinh viên và tên tìm ki?m sang ch? in hoa ?? so sánh không phân bi?t ch? hoa ch? th??ng
         string tenSVUpper = a[i].ten;
-        // transform trong thư viện <algorithm>
+        // transform trong th? vi?n <algorithm>
         transform(tenSVUpper.begin(), tenSVUpper.end(), tenSVUpper.begin(), ::toupper);
         string tenTimKiemUpper = ten;
         transform(tenTimKiemUpper.begin(), tenTimKiemUpper.end(), tenTimKiemUpper.begin(), ::toupper);
@@ -365,41 +370,17 @@ void showStudent(SV a[], int n)
     for (int i = 0; i < n; i++)
     {
         // in sinh vien thu i ra man hinh
-        printf("\n\t %d", i + 1);
-        printf("\t%d", a[i].id);
-        printf("\t%s", a[i].ten);
-        printf("\t\t%s", a[i].gioiTinh);
-        printf("\t\t%d", a[i].tuoi);
+        cout << "\n\t" << i + 1;
+        cout << "\t" << a[i].id;
+        cout << "\t" << a[i].ten;
+        cout << "\t\t" << a[i].gioiTinh;
+        cout << "\t\t" << a[i].tuoi;
         printf("\t%.2f\t%.2f\t%.2f", a[i].diemToan, a[i].diemLy, a[i].diemHoa);
         printf("\t%.2f", a[i].diemTB);
-        printf("\t%s", a[i].hocluc);
+        cout << "\t" << a[i].hocluc;
     }
     printLine(100);
 }
-
-
-// string showStudent(SV a[], int n)
-// {
-//     stringstream result;
-//     result << "\n";
-//     printLine(100);
-//     result << "\n\tSTT\tID\tHo va ten\tGioi tinh\tTuoi\tToan\tLy\tHoa\tDiem TB\tHoc luc";
-//     for (int i = 0; i < n; i++)
-//     {
-//         result << "\n " << i + 1;
-//         result << "\t" << a[i].id;
-//         result << "\t" << a[i].ten;
-//         result << "\t\t" << a[i].gioiTinh;
-//         result << "\t\t" << a[i].tuoi;
-//         result << "\t" << fixed << setprecision(2) << a[i].diemToan;
-//         result << "\t" << fixed << setprecision(2) << a[i].diemLy;
-//         result << "\t" << fixed << setprecision(2) << a[i].diemHoa;
-//         result << "\t" << fixed << setprecision(2) << a[i].diemTB;
-//         result << "\t" << a[i].hocluc;
-//     }
-//     printLine(100);
-//     return result.str();
-// }
 
 void sapxepTheoDTB(SV a[], int n)
 {
@@ -458,9 +439,9 @@ int idLonNhat(SV a[], int n)
     }
     return idMax;
 }
-int docFile(SV a[], string filename){
+int docFile(SV a[], string filename) {
     ifstream fileIn(filename);
-    if(!fileIn){
+    if (!fileIn) {
         cout << "Khong the mo file" << endl;
     }
     cout << "Chuan bi doc file: " << filename << endl;
@@ -474,9 +455,9 @@ int docFile(SV a[], string filename){
 
     return i;
 }
-void ghiFile(SV a[],int n, string fileName){
+void ghiFile(SV a[], int n, string fileName) {
     fstream fileOut(fileName);
-    if(!fileOut.is_open()){
+    if (!fileOut.is_open()) {
         cout << "\nKhong the mo file: " << fileName << endl;
         cout << "Tao file moi voi ten: " << fileName << endl;
         fileOut.open(fileName);
@@ -485,16 +466,16 @@ void ghiFile(SV a[],int n, string fileName){
             return;
         }
     }
-    // Ghi dữ liệu vào file
+    // Ghi du lieu vào file
     for (int i = 0; i < n; i++) {
         fileOut << setw(5) << a[i].id << setw(30) << a[i].ten << setw(5) << a[i].gioiTinh
-                << setw(5) << a[i].tuoi << setw(10) << a[i].diemToan << setw(10) << a[i].diemLy
-                << setw(10) << a[i].diemHoa << setw(10) << a[i].diemTB << setw(10) << a[i].hocluc << endl;
+            << setw(5) << a[i].tuoi << setw(10) << a[i].diemToan << setw(10) << a[i].diemLy
+            << setw(10) << a[i].diemHoa << setw(10) << a[i].diemTB << setw(10) << a[i].hocluc << endl;
     }
-    // Đóng file sau khi ghi xong
+    // Dóng file sau khi ghi xong
     fileOut.close();
 
-    cout << "Dữ liệu đã được ghi vào file " << fileName << endl;
+    cout << "Du lieu da duoc ghi vao file " << fileName << endl;
 }
 
 void printLine(int n)
